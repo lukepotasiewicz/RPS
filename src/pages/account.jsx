@@ -17,7 +17,10 @@ export const Account = () => {
         userData.units[key].id = key;
         return userData.units[key];
       });
-      unitsArray.sort((a, b) => a.name > b.name);
+      console.log(unitsArray);
+      unitsArray.sort((a, b) => ((a.tier > b.tier) ? -1 : 1));
+      unitsArray.sort((a, b) => ((a.name > b.name) ? -1 : 1));
+      console.log(unitsArray);
       userData.units = unitsArray;
       setUser(userData);
     }
