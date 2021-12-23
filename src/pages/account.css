@@ -1,0 +1,84 @@
+.pageWrapper.account {
+  padding-bottom: 300px;
+}
+
+.unitThumbnail {
+  height: 120px;
+  transform: scale(-1, 1);
+}
+
+.unitPreview {
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+  color: white;
+  border: none;
+  display: inline-block;
+  height: 160px;
+  width: 160px;
+  text-align: center;
+  position: relative;
+}
+
+.unitPreview:hover {
+  background-color: rgba(255, 255, 255, 0.089);
+}
+
+.unitPreview:hover::after {
+  content: 'Add';
+  position: absolute;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 26px;
+  left: 56px;
+  top: 65px;
+}
+
+.noHover .unitPreview:hover::after {
+  content: unset;
+}
+.noHover .unitPreview:hover {
+  background-color: transparent;
+}
+
+
+
+.lineup .unitPreview:hover::after {
+  content: 'Remove';
+  left: 34px;
+}
+
+.unitPreview p {
+  margin: 0 0 5px 0;
+}
+
+.tierGlow {
+  box-shadow: 0 0 50px 10px white;
+  width: 0px;
+  /* display: inline-block; */
+  position: absolute;
+  left: 80px;
+  top: 80px;
+  z-index: -1;
+}
+
+.tier-1 {
+  box-shadow: 0 0 50px 15px blue;
+}
+
+.tier-2 {
+  box-shadow: 0 0 50px 30px purple;
+}
+
+.tier-3 {
+  box-shadow: 0 0 50px 40px gold;
+}
+
+.lineup {
+  height: 250px;
+  width: 100%;
+  padding: 20px;
+  border-top: solid 3px #999;
+  background: #262626;
+  margin-left: -10px;
+  position: fixed;
+  bottom: 0;
+}

@@ -1,0 +1,31 @@
+html {
+  height: 100%;
+  background-color: #333;
+  color: white;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-width: 1200px;
+}
+
+body {
+  margin: 0px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.gameLog {
+  width: 50%;
+  min-width: 500px;
+  margin: 10px auto;
+  border: solid 2px #999; 
+  height: 200px;
+  padding: 10px;
+  overflow: auto;
+}
