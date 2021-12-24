@@ -25,7 +25,7 @@ export const Matchmaking = () => {
 
   return (
     <>
-      <Header selected={PAGES.ACCOUNT} />
+      <Header selected={PAGES.PLAY} />
       <div className="pageWrapper matchmaking">
         <h2>Matches:</h2>
         <button

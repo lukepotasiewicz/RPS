@@ -12,8 +12,8 @@ const state = {
 };
 const gameLog = [];
 
-// const ws = new WebSocket('ws://localhost:9898/');
-const ws = new WebSocket('ws://73.47.47.101:9898/');
+const ws = new WebSocket('ws://localhost:9898/');
+// const ws = new WebSocket('ws://73.47.47.101:9898/');
 
 const getMessage = (message) => message.split('|');
 const sendMessage = (type, player, value) => {

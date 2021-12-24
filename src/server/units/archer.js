@@ -1,6 +1,6 @@
 import { Unit } from './unit.js';
 
-export class Knight extends Unit {
+export class Archer extends Unit {
   constructor(tier) {
     const moves = {
       ATTACK: {
@@ -10,25 +10,31 @@ export class Knight extends Unit {
         position: [0],
       },
       KICK: {
-        damage: [2,3,3,4][tier],
+        damage: [2, 2, 3, 4][tier],
         name: 'Kick',
         position: [0],
       },
-      BLOCK: {
+      RIPOSTE: {
         damage: 0,
-        block: true,
-        name: 'Block',
+        name: 'Riposte',
         position: [0],
+        riposte: true,
+      },
+      DODGE: {
+        damage: 0,
+        name: 'Dodge',
+        position: [0],
+        dodge: true,
       },
       REST: {
         damage: 0,
-        heal: [1,1,2,3][tier],
+        heal: [1,1,1,2][tier],
         name: 'Rest',
         position: [0, 1, 2],
       },
     };
     super({
-      name: 'Knight', health: [12, 15, 19, 24][tier], nextMove: null, stunned: false, blocked: false, moves, tier,
+      name: 'Archer', health: [8,9,11,14][tier], nextMove: null, stunned: false, blocked: false, moves, tier,
     });
   }
 
@@ -41,6 +47,8 @@ export class Knight extends Unit {
       stunned: this.stunned,
       blocked: this.blocked,
       moves: this.moves,
+      cantRiposte: this.cantRiposte,
+      cantDodge: this.cantDodge,
       tier: this.tier,
     };
   }
@@ -57,6 +65,8 @@ export class Knight extends Unit {
   clearStatusEffects() {
     this.stunned = false;
     this.blocked = false;
+    this.cantRiposte = false;
+    this.cantDodge = false;
   }
 
   selfEffect() {

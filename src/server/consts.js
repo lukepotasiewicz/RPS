@@ -1,7 +1,7 @@
 export const MOVE = {
   ATTACK: 'Attack',
   KICK: 'Kick',
-  REPOST: 'Repost',
+  RIPOSTE: 'Riposte',
   BLOCK: 'Block',
 };
 

@@ -48,7 +48,7 @@ app.get('/api/user', (req, res) => {
   return res.send({ user });
 });
 
-app.get('/api/open-lootbox', (req, res) => {
+app.get('/api/openLootbox', (req, res) => {
   const username = req.query.username.replace(/[^0-9a-zA-Z-_ ]+/gi, '');
 
   const user = readUserDB()[username];
@@ -58,6 +58,37 @@ app.get('/api/open-lootbox', (req, res) => {
   user.lootboxes -= 1;
   const id = Math.ceil(Math.random() * 10000000000);
   user.units[id] = generateUnit();
+
+  writeUserDB({ [username]: user });
+  return res.send({ user });
+});
+
+app.post('/api/buyLootbox', (req, res) => {
+  const username = req.body.username.replace(/[^0-9a-zA-Z-_ ]+/gi, '');
+  const cost = 5;
+
+  const user = readUserDB()[username];
+  if (user.coin < cost) {
+    return res.send({ user });
+  }
+  user.lootboxes += 1;
+  user.coin -= cost;
+
+  writeUserDB({ [username]: user });
+  return res.send({ user });
+});
+
+app.post('/api/sellUnit', (req, res) => {
+  const username = req.body.username.replace(/[^0-9a-zA-Z-_ ]+/gi, '');
+  const unitId = req.body.unitId.replace(/[^0-9]+/gi, '');
+
+  const user = readUserDB()[username];
+  const unitToSell = user.units[unitId];
+  if (!unitToSell) {
+    return res.send(400);
+  }
+  user.units[unitId] = undefined;
+  user.coin += unitToSell.value;
 
   writeUserDB({ [username]: user });
   return res.send({ user });
@@ -103,7 +134,7 @@ app.get('/clear', (req, res) => {
   const db = readUserDB();
   db[username] = undefined;
   fs.writeFileSync('users.json', JSON.stringify(db));
-  res.send('ceared');
+  res.send('cleared ' + username);
 });
 
 app.get('/give', (req, res) => {
@@ -111,6 +142,7 @@ app.get('/give', (req, res) => {
 
   const user = readUserDB()[username];
   user.lootboxes += 5;
+  user.coin += 50;
 
   writeUserDB({ [username]: user });
   return res.send({ user });

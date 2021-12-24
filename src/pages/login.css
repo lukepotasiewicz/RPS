@@ -26,6 +26,10 @@
   background: transparent;
   font-size: 16px;
 }
+.loginContainer button:hover {
+  background: white;
+  color: #333;
+}
 
 .pageWrapper.login {
   text-align: center;

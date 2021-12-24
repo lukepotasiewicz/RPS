@@ -3,16 +3,19 @@ export const UNIT_TABLE = {
     name: 'Knight',
     weight: 100,
     tiers: [50, 20, 5, 1],
+    value: [1, 3, 8, 20],
   },
   DUALIST: {
     name: 'Dualist',
     weight: 100,
     tiers: [50, 20, 5, 1],
+    value: [1, 3, 8, 20],
   },
   ARCHER: {
     name: 'Archer',
     weight: 50,
     tiers: [50, 20, 5, 1],
+    value: [1, 5, 15, 30],
   },
 };
 
@@ -37,5 +40,5 @@ export const generateUnit = () => {
     Object.values(UNIT_TABLE).map((unit) => unit.weight),
   )];
   const tierChoice = getRanIndexFromWeightArray(unitChoice.tiers);
-  return { name: unitChoice.name, tier: tierChoice };
+  return { name: unitChoice.name, tier: tierChoice, value: unitChoice.value[tierChoice] };
 };

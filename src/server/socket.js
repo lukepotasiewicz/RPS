@@ -6,7 +6,7 @@ import { Player } from './player.js';
 const server = http.createServer();
 server.listen(9898);
 
-const players = {};
+let players = {};
 
 const wsServer = new WebSocketServer({
   httpServer: server,
@@ -94,5 +94,6 @@ wsServer.on('request', (request) => {
   });
   connection.on('close', (reasonCode, description) => {
     console.log('Client has disconnected.');
+    players = {};
   });
 });

@@ -7,7 +7,25 @@
   transform: scale(-1, 1);
 }
 
-.unitPreview {
+.account > p {
+  display: inline-block;
+  margin: 15px;
+}
+
+.account button:not(.unitPreview) {
+  padding: 5px 10px;
+  border: solid 3px white;
+  color: white;
+  background: transparent;
+  font-size: 16px;
+  margin: 0 10px;
+}
+.account button:hover:not(.unitPreview) {
+  background: white;
+  color: #333;
+}
+
+.account .unitPreview {
   background-color: transparent;
   transition: background-color 0.2s ease;
   color: white;
@@ -38,12 +56,19 @@
 .noHover .unitPreview:hover {
   background-color: transparent;
 }
-
-
+.noHover .unitPreview:hover {
+  background-color: transparent;
+}
 
 .lineup .unitPreview:hover::after {
   content: 'Remove';
   left: 34px;
+}
+
+.selling .unitPreview:hover::after {
+  color: #ffcc15a4;
+  content: 'Sell';
+  left: 56px;
 }
 
 .unitPreview p {
@@ -81,4 +106,28 @@
   margin-left: -10px;
   position: fixed;
   bottom: 0;
+}
+
+.icon {
+  height: 28px;
+  transform: scale(1.5);
+  vertical-align: middle;
+  margin: 0 8px 4px 0;
+}
+
+.coin {
+  color: #ebbf1c;
+  text-shadow: 1px 0 2px black, -1px 0 2px black, 1px 0 2px black, -1px 0 2px black;
+  font-size: 16px;
+}
+
+.selling .value {
+  position: absolute;
+  display: inline-block;
+  bottom: 10px;
+  left: 50px;
+}
+
+.value {
+  display: none;
 }

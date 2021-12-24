@@ -12,7 +12,7 @@ matchmakingRouter.get('/matches', (req, res) => {
   return res.send({ matches });
 });
 
-matchmakingRouter.post('/make-match', (req, res) => {
+matchmakingRouter.post('/makeMatch', (req, res) => {
   const username = req.body.username.replace(/[^0-9a-zA-Z-_ ]+/gi, '');
 
   const matches = readMatchesDB();
@@ -25,7 +25,7 @@ matchmakingRouter.post('/make-match', (req, res) => {
   return res.send({ matches });
 });
 
-matchmakingRouter.post('/join-match', (req, res) => {
+matchmakingRouter.post('/joinMatch', (req, res) => {
   const username = req.body.username.replace(/[^0-9a-zA-Z-_ ]+/gi, '');
 
   const matches = readMatchesDB();

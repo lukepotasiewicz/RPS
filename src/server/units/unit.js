@@ -1,6 +1,6 @@
 export class Unit {
   constructor({
-    name, health, nextMove, stunned, blocked, moves,
+    name, health, nextMove, stunned, blocked, moves, tier,
   }) {
     this.name = name;
     this.health = health;
@@ -9,6 +9,7 @@ export class Unit {
     this.stunned = stunned;
     this.blocked = blocked;
     this.moves = moves;
+    this.tier = tier;
   }
 
   getData() {
@@ -44,12 +45,12 @@ export class Unit {
       this.blocked = true;
     } else if (playerMove.block && enemyMove.blockable) {
       // none
-    } else if (playerMove.blockable && enemyMove.repost) {
+    } else if (playerMove.blockable && enemyMove.riposte) {
       this.health -= playerMove.damage;
-    } else if (playerMove.repost) {
+    } else if (playerMove.riposte) {
       if (!enemyMove.blockable) {
         this.health -= enemyMove.damage;
-        this.cantRepost = true;
+        this.cantRiposte = true;
       }
     } else {
       this.health -= enemyMove.damage;

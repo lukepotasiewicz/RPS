@@ -1,24 +1,24 @@
 import { Unit } from './unit.js';
 
 export class Dualist extends Unit {
-  constructor() {
+  constructor(tier) {
     const moves = {
       ATTACK: {
-        damage: 4,
+        damage: [4,5,6,8][tier],
         name: 'Attack',
         blockable: true,
         position: [0],
       },
       KICK: {
-        damage: 2,
+        damage: [2, 2, 3, 4][tier],
         name: 'Kick',
         position: [0],
       },
-      REPOST: {
+      RIPOSTE: {
         damage: 0,
-        name: 'Repost',
+        name: 'Riposte',
         position: [0],
-        repost: true,
+        riposte: true,
       },
       DODGE: {
         damage: 0,
@@ -28,13 +28,13 @@ export class Dualist extends Unit {
       },
       REST: {
         damage: 0,
-        heal: 1,
+        heal: [1,1,1,2][tier],
         name: 'Rest',
         position: [0, 1, 2],
       },
     };
     super({
-      name: 'Dualist', health: 10, nextMove: null, stunned: false, blocked: false, moves,
+      name: 'Dualist', health: [10, 12, 14, 18][tier], nextMove: null, stunned: false, blocked: false, moves, tier
     });
   }
 
@@ -47,8 +47,9 @@ export class Dualist extends Unit {
       stunned: this.stunned,
       blocked: this.blocked,
       moves: this.moves,
-      cantRepost: this.cantRepost,
+      cantRiposte: this.cantRiposte,
       cantDodge: this.cantDodge,
+      tier: this.tier,
     };
   }
 
@@ -64,7 +65,7 @@ export class Dualist extends Unit {
   clearStatusEffects() {
     this.stunned = false;
     this.blocked = false;
-    this.cantRepost = false;
+    this.cantRiposte = false;
     this.cantDodge = false;
   }
 

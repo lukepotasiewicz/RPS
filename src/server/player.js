@@ -1,5 +1,6 @@
 import { UNIT } from './consts.js';
 import { readUserDB } from './database.js';
+import { Archer } from './units/archer.js';
 import { Dualist } from './units/dualist.js';
 import { Knight } from './units/knight.js';
 
@@ -17,9 +18,8 @@ export class Player {
       } if (UNIT.DUALIST === unitName) {
         return new Dualist(unit.tier);
       } if (UNIT.ARCHER === unitName) {
-        return new Knight();
+        return new Archer(unit.tier);
       }
-      return new Knight();
     });
   }
 
