@@ -134,7 +134,7 @@ app.get('/clear', (req, res) => {
   const db = readUserDB();
   db[username] = undefined;
   fs.writeFileSync('users.json', JSON.stringify(db));
-  res.send('cleared ' + username);
+  res.send(`cleared ${username}`);
 });
 
 app.get('/give', (req, res) => {
