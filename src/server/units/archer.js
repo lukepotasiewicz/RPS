@@ -7,14 +7,14 @@ export class Archer extends Unit {
         damage: 0,
         name: 'Draw',
         draw: true,
-        blockable: true,
         position: [0, 1, 2],
       },
       SHOOT: {
-        damage: [4,5,6,8][tier],
+        damage: [4, 5, 6, 8][tier],
         name: 'Shoot',
         position: [0, 1, 2],
         shoot: true,
+        blockable: true,
       },
       KICK: {
         damage: [2, 2, 3, 4][tier],
@@ -29,13 +29,13 @@ export class Archer extends Unit {
       },
       REST: {
         damage: 0,
-        heal: [1,1,1,2][tier],
+        heal: [1, 1, 1, 2][tier],
         name: 'Rest',
         position: [0, 1, 2],
       },
     };
     super({
-      name: 'Archer', health: [8,9,11,14][tier], nextMove: null, stunned: false, blocked: false, moves, tier,
+      name: 'Archer', health: [8, 9, 11, 14][tier], nextMove: null, stunned: false, blocked: false, moves, tier,
     });
   }
 
@@ -49,6 +49,7 @@ export class Archer extends Unit {
       blocked: this.blocked,
       moves: this.moves,
       canShoot: this.canShoot,
+      cantDodge: this.cantDodge,
       tier: this.tier,
     };
   }
@@ -65,6 +66,7 @@ export class Archer extends Unit {
   clearStatusEffects() {
     this.stunned = false;
     this.blocked = false;
+    this.cantDodge = false;
   }
 
   selfEffect() {
@@ -73,6 +75,12 @@ export class Archer extends Unit {
     }
     if (this.moves[this.nextMove].draw) {
       this.canShoot = true;
+    }
+    if (this.moves[this.nextMove].shoot) {
+      this.canShoot = false;
+    }
+    if (this.moves[this.nextMove].dodge) {
+      this.cantDodge = true;
     }
   }
 }

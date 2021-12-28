@@ -16,14 +16,21 @@ const ws = new WebSocket('ws://localhost:9898/');
 // const ws = new WebSocket('ws://73.47.47.101:9898/');
 
 const getMessage = (message) => message.split('|');
-const sendMessage = (type, player, value) => {
-  ws.send(`${type}|${player}|${value}`);
+const sendMessage = (type, match, player, value) => {
+  ws.send(`${type}|${match}|${player}|${value}`);
 };
 window.globalSendMessage = sendMessage;
 
 ws.onopen = function () {
   console.log('WebSocket Client Connected');
-  sendMessage(MESSAGE.PLAYER, USER.username, '');
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const params = Object.fromEntries(urlSearchParams.entries());
+  if (params.match) {
+    USER.match = params.match;
+  } else {
+    USER.match = USER.username;
+  }
+  sendMessage(MESSAGE.PLAYER, USER.match, USER.username, '');
 };
 
 ws.onmessage = function (e) {

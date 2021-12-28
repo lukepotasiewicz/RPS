@@ -10,7 +10,6 @@ export class Player {
     this.ready = ready;
     this.connection = connection;
     const playerUnits = Object.values(readUserDB()[name]?.lineup || {});
-    console.log(playerUnits);
     this.units = playerUnits.map((unit) => {
       const unitName = unit.name.toUpperCase();
       if (UNIT.KNIGHT === unitName) {
@@ -20,6 +19,7 @@ export class Player {
       } if (UNIT.ARCHER === unitName) {
         return new Archer(unit.tier);
       }
+      return new Knight(0);
     });
   }
 

@@ -40,7 +40,7 @@ export class Unit {
   recieveEffect(enemyMove) {
     const playerMove = this.moves[this.nextMove];
     if (playerMove.dodge) {
-      this.cantDodge = true;
+      // none
     } else if (playerMove.blockable && enemyMove.block) {
       this.blocked = true;
     } else if (playerMove.block && enemyMove.blockable) {

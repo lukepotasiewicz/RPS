@@ -44,8 +44,8 @@ export const Matchmaking = () => {
                   {matches[key].name}
                   <button
                     type="button"
-                    onClick={() => joinMatch(USER.username).then(() => {
-                      window.location.href = PAGES.GAME;
+                    onClick={() => joinMatch(matches[key].name).then(() => {
+                      window.location.href = `${PAGES.GAME}?match=${matches[key].name}`;
                     })}
                   >
                     Join

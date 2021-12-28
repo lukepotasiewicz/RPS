@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { MESSAGE } from '../consts';
+import { USER } from '../utils/cookies';
 import './player.css';
 import { Unit } from './unit';
 
 export const Player = ({
   name, units, isEnemy, canSubmit, setCanSubmit,
 }) => {
-  const [moves, setMoves] = useState(['REST', 'REST']);
+  const [moves, setMoves] = useState(['REST', 'REST', 'REST']);
   const unitsArray = units?.map((unit, i) => (
     <Unit
       {...unit}
@@ -37,7 +38,7 @@ export const Player = ({
             disabled={!canSubmit}
             onClick={() => {
               console.log(`submitted ${moves}`);
-              window.globalSendMessage(MESSAGE.MOVE, name, JSON.stringify(moves));
+              window.globalSendMessage(MESSAGE.MOVE, USER.match, name, JSON.stringify(moves));
               setCanSubmit(false);
             }}
           >

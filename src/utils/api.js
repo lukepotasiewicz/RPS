@@ -20,4 +20,4 @@ export const getMatches = (username) => axios.get(`${apiBase}/matches?username=$
 
 export const makeMatch = (username) => axios.post(`${apiBase}/makeMatch`, { username });
 
-export const joinMatch = (username) => axios.post(`${apiBase}/joinMatch`, { username });
+export const joinMatch = (match) => axios.post(`${apiBase}/joinMatch`, { match });

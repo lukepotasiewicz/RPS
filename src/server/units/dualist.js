@@ -4,7 +4,7 @@ export class Dualist extends Unit {
   constructor(tier) {
     const moves = {
       ATTACK: {
-        damage: [4,5,6,8][tier],
+        damage: [4, 5, 6, 8][tier],
         name: 'Attack',
         blockable: true,
         position: [0],
@@ -28,13 +28,13 @@ export class Dualist extends Unit {
       },
       REST: {
         damage: 0,
-        heal: [1,1,1,2][tier],
+        heal: [1, 1, 1, 2][tier],
         name: 'Rest',
         position: [0, 1, 2],
       },
     };
     super({
-      name: 'Dualist', health: [10, 12, 14, 18][tier], nextMove: null, stunned: false, blocked: false, moves, tier
+      name: 'Dualist', health: [10, 12, 14, 18][tier], nextMove: null, stunned: false, blocked: false, moves, tier,
     });
   }
 
@@ -72,6 +72,9 @@ export class Dualist extends Unit {
   selfEffect() {
     if (this.moves[this.nextMove].heal && this.health < this.maxHealth) {
       this.health += this.moves[this.nextMove].heal;
+    }
+    if (this.moves[this.nextMove].dodge) {
+      this.cantDodge = true;
     }
   }
 }

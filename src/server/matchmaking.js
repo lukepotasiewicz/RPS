@@ -26,10 +26,10 @@ matchmakingRouter.post('/makeMatch', (req, res) => {
 });
 
 matchmakingRouter.post('/joinMatch', (req, res) => {
-  const username = req.body.username.replace(/[^0-9a-zA-Z-_ ]+/gi, '');
+  const match = req.body.match.replace(/[^0-9a-zA-Z-_ ]+/gi, '');
 
   const matches = readMatchesDB();
-  matches[username] = undefined;
+  matches[match] = undefined;
 
   writeMatchesDB(matches);
 
