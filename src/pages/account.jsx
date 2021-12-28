@@ -5,7 +5,7 @@ import {
   addToLineup, buyLootbox, getOpenLootbox, getUser, removeFromLineup, sellUnit,
 } from '../utils/api';
 import { USER } from '../utils/cookies';
-import coin from '../images/coin.png'
+import coin from '../images/coin.png';
 import './account.css';
 
 export const Account = () => {
@@ -38,7 +38,10 @@ export const Account = () => {
       <p>{unit.name}</p>
       <div className={`tierGlow tier-${unit.tier}`} />
       <img className="unitThumbnail" alt="" src={IMAGE[unit.name]} />
-      <p className="value coin"><img src={coin} alt='' className="icon" />{unit.value}</p>
+      <p className="value coin">
+        <img src={coin} alt="" className="icon" />
+        {unit.value}
+      </p>
     </button>
   );
 
@@ -47,7 +50,7 @@ export const Account = () => {
       <Header selected={PAGES.ACCOUNT} />
       {user
         ? (
-          <div className={`pageWrapper account `}>
+          <div className="pageWrapper account ">
             <h2>{`Hello, ${USER.username}`}</h2>
             <p>{`Lootboxes: ${user.lootboxes}`}</p>
             <button
@@ -66,7 +69,10 @@ export const Account = () => {
             >
               Buy Lootbox
             </button>
-            <p className="coin"><img src={coin} alt='' className="icon" />{user.coin}</p>
+            <p className="coin">
+              <img src={coin} alt="" className="icon" />
+              {user.coin}
+            </p>
             <button
               type="button"
               onClick={() => {
