@@ -3,22 +3,23 @@ import { Unit } from './unit.js';
 export class Archer extends Unit {
   constructor(tier) {
     const moves = {
-      ATTACK: {
-        damage: [4,5,6,8][tier],
-        name: 'Attack',
+      DRAW: {
+        damage: 0,
+        name: 'Draw',
+        draw: true,
         blockable: true,
-        position: [0],
+        position: [0, 1, 2],
+      },
+      SHOOT: {
+        damage: [4,5,6,8][tier],
+        name: 'Shoot',
+        position: [0, 1, 2],
+        shoot: true,
       },
       KICK: {
         damage: [2, 2, 3, 4][tier],
         name: 'Kick',
         position: [0],
-      },
-      RIPOSTE: {
-        damage: 0,
-        name: 'Riposte',
-        position: [0],
-        riposte: true,
       },
       DODGE: {
         damage: 0,
@@ -47,8 +48,7 @@ export class Archer extends Unit {
       stunned: this.stunned,
       blocked: this.blocked,
       moves: this.moves,
-      cantRiposte: this.cantRiposte,
-      cantDodge: this.cantDodge,
+      canShoot: this.canShoot,
       tier: this.tier,
     };
   }
@@ -65,13 +65,14 @@ export class Archer extends Unit {
   clearStatusEffects() {
     this.stunned = false;
     this.blocked = false;
-    this.cantRiposte = false;
-    this.cantDodge = false;
   }
 
   selfEffect() {
     if (this.moves[this.nextMove].heal && this.health < this.maxHealth) {
       this.health += this.moves[this.nextMove].heal;
+    }
+    if (this.moves[this.nextMove].draw) {
+      this.canShoot = true;
     }
   }
 }

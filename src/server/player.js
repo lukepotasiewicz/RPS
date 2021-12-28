@@ -9,7 +9,7 @@ export class Player {
     this.name = name;
     this.ready = ready;
     this.connection = connection;
-    const playerUnits = Object.values(readUserDB()[name]?.lineup);
+    const playerUnits = Object.values(readUserDB()[name]?.lineup || {});
     console.log(playerUnits);
     this.units = playerUnits.map((unit) => {
       const unitName = unit.name.toUpperCase();

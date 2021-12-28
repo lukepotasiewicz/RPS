@@ -66,27 +66,44 @@ wsServer.on('request', (request) => {
       players[player].units.forEach((unit, i) => unit.setData({ nextMove: moves[i] }));
       players[player].ready = true;
       if (getOtherPlayer(player).ready) {
-        const enemyUnit = getOtherPlayer(player).units[0];
-        const playerUnit = getThisPlayer(player).units[0];
-        const enemyPreHealth = enemyUnit.health;
-        const playerPreHealth = playerUnit.health;
-        const enemyMove = enemyUnit.moves[enemyUnit.nextMove];
-        const playerMove = playerUnit.moves[playerUnit.nextMove];
-        enemyUnit.selfEffect();
-        playerUnit.selfEffect();
-        enemyUnit.clearStatusEffects();
-        playerUnit.clearStatusEffects();
-        enemyUnit.recieveEffect(playerMove);
-        playerUnit.recieveEffect(enemyMove);
-        if (enemyUnit.health <= 0) {
-          getOtherPlayer(player).units.shift();
+        let enemyLog;
+        let playerLog;
+        for (let i = 0; i < 3; i++) {
+          const enemyUnit = getOtherPlayer(player).units[i] || {};
+          const playerUnit = getThisPlayer(player).units[i] || {};
+          const firstEnemyUnit = getOtherPlayer(player).units[0];
+          const firstPlayerUnit = getThisPlayer(player).units[0];
+          const enemyPreHealth = enemyUnit.health;
+          const playerPreHealth = playerUnit.health;
+          let enemyMove = '';
+          let playerMove = '';
+          if (enemyUnit) {
+            enemyMove = enemyUnit.moves[enemyUnit.nextMove];
+            enemyUnit.selfEffect();
+            enemyUnit.clearStatusEffects();
+            firstPlayerUnit.recieveEffect(enemyMove);
+          }
+          if (playerUnit) {
+            playerMove = playerUnit.moves[playerUnit.nextMove];
+            playerUnit.selfEffect();
+            playerUnit.clearStatusEffects();
+            firstEnemyUnit.recieveEffect(playerMove);
+          }
+          enemyLog += `${getOtherPlayer(player).name}:${enemyUnit.name}: ${enemyMove.name}, ${enemyUnit.health - enemyPreHealth}hp\n`;
+          playerLog += `${getThisPlayer(player).name}:${playerUnit.name}: ${playerMove.name}, ${playerUnit.health - playerPreHealth}hp\n`;
         }
-        if (playerUnit.health <= 0) {
-          getThisPlayer(player).units.shift();
-          console.log('------------------------------');
+        
+        for (let i = 0; i < 3; i++) {
+          const enemyUnit = getOtherPlayer(player).units[i];
+          const playerUnit = getThisPlayer(player).units[i];
+          if (enemyUnit && enemyUnit.health <= 0) {
+            getOtherPlayer(player).units.shift();
+          }
+          if (playerUnit && playerUnit.health <= 0) {
+            getThisPlayer(player).units.shift();
+            console.log('------------------------------');
+          }
         }
-        const enemyLog = `${getOtherPlayer(player).name}:${enemyUnit.name}: ${enemyMove.name}, ${enemyUnit.health - enemyPreHealth}hp`;
-        const playerLog = `${getThisPlayer(player).name}:${playerUnit.name}: ${playerMove.name}, ${playerUnit.health - playerPreHealth}hp`;
         updateBothClients(player, playerLog, enemyLog);
         Object.values(players).forEach((p) => { p.ready = false; });
       }
