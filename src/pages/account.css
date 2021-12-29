@@ -25,7 +25,7 @@
   color: #333;
 }
 
-.account .unitPreview {
+.account .unitPreview, .modal .unitPreview {
   background-color: transparent;
   transition: background-color 0.2s ease;
   color: white;
@@ -37,11 +37,11 @@
   position: relative;
 }
 
-.unitPreview:hover {
+.account .unitPreview:hover {
   background-color: rgba(255, 255, 255, 0.089);
 }
 
-.unitPreview:hover::after {
+.account .unitPreview:hover::after {
   content: 'Add';
   position: absolute;
   color: rgba(255, 255, 255, 0.5);
@@ -130,4 +130,18 @@
 
 .value {
   display: none;
+}
+
+.particle {
+  position: fixed;
+  opacity: 1;
+  transition: left 0.5s ease, top 0.9s ease-out, opacity 0.2s ease-out;
+}
+
+.particle.coin {
+  width: 10px;
+  height: 10px;
+  background-color: #ebbf1c;
+  border-radius: 100%;
+  box-shadow: 0 1px 3px 1px black;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MESSAGE, PAGES } from '../consts';
 import './game.css';
 import { Player } from '../components/player';
@@ -12,58 +12,59 @@ const state = {
 };
 const gameLog = [];
 
-const ws = new WebSocket('ws://localhost:9898/');
-// const ws = new WebSocket('ws://73.47.47.101:9898/');
+const startGame = () => {
+  const ws = new WebSocket('ws://localhost:9898/');
+  // const ws = new WebSocket('ws://73.47.47.101:9898/');
 
-const getMessage = (message) => message.split('|');
-const sendMessage = (type, match, player, value) => {
-  ws.send(`${type}|${match}|${player}|${value}`);
+  const getMessage = (message) => message.split('|');
+  const sendMessage = (type, match, player, value) => {
+    ws.send(`${type}|${match}|${player}|${value}`);
+  };
+  window.globalSendMessage = sendMessage;
+
+  ws.onopen = function () {
+    console.log('WebSocket Client Connected');
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    if (params.match) {
+      USER.match = params.match;
+    } else {
+      USER.match = USER.username;
+    }
+    sendMessage(MESSAGE.PLAYER, USER.match, USER.username, '');
+  };
+
+  ws.onmessage = function (e) {
+    const [messageType, messageText] = getMessage(e.data);
+    if (messageType === MESSAGE.ENEMY) {
+      state.setEnemyState({
+        ...state.enemyState,
+        name: messageText,
+      });
+    }
+    if (messageType === MESSAGE.PLAYER) {
+      state.setPlayerState({
+        ...state.playerState,
+        name: messageText,
+      });
+    }
+    if (messageType === MESSAGE.TURN_END) {
+      const { enemyState, playerState, log } = JSON.parse(messageText);
+      console.log(playerState);
+      console.log(enemyState);
+      gameLog.push(log);
+      state.setPlayerState({
+        ...state.playerState,
+        ...playerState,
+      });
+      state.setEnemyState({
+        ...state.enemyState,
+        ...enemyState,
+      });
+      state.setCanSubmit(true);
+    }
+  };
 };
-window.globalSendMessage = sendMessage;
-
-ws.onopen = function () {
-  console.log('WebSocket Client Connected');
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const params = Object.fromEntries(urlSearchParams.entries());
-  if (params.match) {
-    USER.match = params.match;
-  } else {
-    USER.match = USER.username;
-  }
-  sendMessage(MESSAGE.PLAYER, USER.match, USER.username, '');
-};
-
-ws.onmessage = function (e) {
-  const [messageType, messageText] = getMessage(e.data);
-  if (messageType === MESSAGE.ENEMY) {
-    state.setEnemyState({
-      ...state.enemyState,
-      name: messageText,
-    });
-  }
-  if (messageType === MESSAGE.PLAYER) {
-    state.setPlayerState({
-      ...state.playerState,
-      name: messageText,
-    });
-  }
-  if (messageType === MESSAGE.TURN_END) {
-    const { enemyState, playerState, log } = JSON.parse(messageText);
-    console.log(playerState);
-    console.log(enemyState);
-    gameLog.push(log);
-    state.setPlayerState({
-      ...state.playerState,
-      ...playerState,
-    });
-    state.setEnemyState({
-      ...state.enemyState,
-      ...enemyState,
-    });
-    state.setCanSubmit(true);
-  }
-};
-
 export const Game = function () {
   const [playerState, setPlayerState] = useState({});
   state.setPlayerState = setPlayerState;
@@ -71,6 +72,10 @@ export const Game = function () {
   state.setEnemyState = setEnemyState;
   const [canSubmit, setCanSubmit] = useState(true);
   state.setCanSubmit = setCanSubmit;
+
+  useEffect(() => {
+    startGame();
+  }, []);
   console.log(playerState);
   return (
     <>

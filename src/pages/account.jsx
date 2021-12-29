@@ -7,6 +7,7 @@ import {
 import { USER } from '../utils/cookies';
 import coin from '../images/coin.png';
 import './account.css';
+import { coinParticles } from '../utils/particles';
 
 export const Account = () => {
   const [user, setUser] = useState();
@@ -50,13 +51,33 @@ export const Account = () => {
       <Header selected={PAGES.ACCOUNT} />
       {user
         ? (
-          <div className="pageWrapper account ">
+          <div className="pageWrapper account">
             <h2>{`Hello, ${USER.username}`}</h2>
             <p>{`Lootboxes: ${user.lootboxes}`}</p>
             <button
               type="button"
               onClick={() => {
-                getOpenLootbox(USER.username).then(promiseUserData);
+                if (user.lootboxes > 0) {
+                  getOpenLootbox(USER.username).then((data) => {
+                    setSelling(false);
+                    window.globalSetModalContent((
+                      <>
+                        <h2>Lootbox</h2>
+                        <p>opening...</p>
+                      </>));
+                    window.globalSetLockModal(true);
+                    setTimeout(() => {
+                      window.globalSetModalContent((
+                        <>
+                          <h2>Lootbox</h2>
+                          <p>{data.data.newUnit.name}</p>
+                          {unitPreview(data.data.newUnit, () => {})}
+                        </>));
+                      window.globalSetLockModal(false);
+                      promiseUserData(data);
+                    }, 500);
+                  });
+                }
               }}
             >
               Open Lootbox
@@ -64,7 +85,10 @@ export const Account = () => {
             <button
               type="button"
               onClick={() => {
-                buyLootbox(USER.username).then(promiseUserData);
+                if (user.coin >= 5) {
+                  setSelling(false);
+                  buyLootbox(USER.username).then(promiseUserData);
+                }
               }}
             >
               Buy Lootbox
@@ -86,14 +110,20 @@ export const Account = () => {
               {user.units.map((unit) => unitPreview(
                 unit,
                 !selling ? () => addToLineup(USER.username, unit.id).then(promiseUserData)
-                  : () => sellUnit(USER.username, unit.id).then(promiseUserData),
+                  : () => {
+                    sellUnit(USER.username, unit.id).then(promiseUserData);
+                    coinParticles(unit.value);
+                  },
               ))}
             </div>
             <div className="lineup">
               <h3>{`Lineup: (${Object.keys(user.lineup || {}).length}/3)`}</h3>
               {Object.keys(user.lineup || {}).map((key) => unitPreview(
                 user.lineup[key],
-                () => removeFromLineup(USER.username, key).then(promiseUserData),
+                () => {
+                  setSelling(false);
+                  removeFromLineup(USER.username, key).then(promiseUserData);
+                },
               ))}
             </div>
           </div>

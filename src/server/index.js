@@ -57,10 +57,11 @@ app.get('/api/openLootbox', (req, res) => {
   }
   user.lootboxes -= 1;
   const id = Math.ceil(Math.random() * 10000000000);
-  user.units[id] = generateUnit();
+  const newUnit = generateUnit();
+  user.units[id] = newUnit;
 
   writeUserDB({ [username]: user });
-  return res.send({ user });
+  return res.send({ user, newUnit });
 });
 
 app.post('/api/buyLootbox', (req, res) => {
